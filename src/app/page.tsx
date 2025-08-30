@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { Text, Flex, TextInput, Button } from '@mantine/core'
 import TimingCounter from '@/components/tokens/timing-counter'
 import PomodoroStack from '@/components/tokens/pomodoro-stack'
+import PomodoroTimingActions from '@/components/tokens/pomodoro-timing-actions'
+import Header from '@/components/tokens/header'
 
 export default function Home() {
     return (
@@ -14,6 +16,8 @@ export default function Home() {
                 alt='screen background'
                 className='object-cover h-full w-full absolute top-0 left-0'
             />
+            {/* heading */}
+            <Header />
             {/* sides container */}
             <div className='w-full h-full flex flex-col xl:flex-row relative '>
                 {/* left side container */}
@@ -29,9 +33,9 @@ export default function Home() {
                     </Flex>
                 </div>
                 {/* right side container */}
-                <div className='h-full w-full p-6 flex flex-col gap-4 justify-center items-center bg-white/20 backdrop-blur-xs rounded-2xl'>
+                <div className='h-full w-full p-6 flex flex-col justify-center items-center bg-white/20 backdrop-blur-xs rounded-2xl'>
                     {/* wrapper container to position center */}
-                    <div className='flex flex-col items-center gap-4'>
+                    <div className='flex flex-col items-center gap-7'>
                         {/* Task Label Field */}
                         <TextInput placeholder='Task' variant='filled' w='150px' />
                         {/* Timing */}
@@ -39,9 +43,7 @@ export default function Home() {
                         {/* Pomodoro Stacking */}
                         <PomodoroStack />
                         {/* Action sections */}
-                        <Flex>
-                            <Button variant='filled'>Button</Button>
-                        </Flex>
+                        <PomodoroTimingActions />
                     </div>
                 </div>
             </div>

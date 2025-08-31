@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google'
 import '@mantine/core/styles.css'
 import './globals.css'
 import { ColorSchemeScript, mantineHtmlProps } from '@mantine/core'
-import ThemeProvider from '@/components/providers/theme-provider'
+import ThemeProvider from '@/providers/theme-provider'
 
 const inter = Inter({
     variable: '--font-inter',

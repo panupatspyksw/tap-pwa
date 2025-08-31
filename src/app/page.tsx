@@ -33,7 +33,7 @@ export default function Home() {
                     </Flex>
                 </div>
                 {/* right side container */}
-                <div className='h-full w-full p-6 flex flex-col justify-center items-center bg-white/20 backdrop-blur-xs rounded-2xl'>
+                <div className=' h-full w-full p-6 flex flex-col justify-center items-center bg-white/20 backdrop-blur-xs rounded-2xl'>
                     {/* wrapper container to position center */}
                     <div className='flex flex-col items-center gap-7'>
                         {/* Task Label Field */}

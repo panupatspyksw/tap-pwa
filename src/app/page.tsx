@@ -1,10 +1,11 @@
 import ScreenContainer from '@/components/tokens/screen-container'
 import Image from 'next/image'
-import { Text, Flex, TextInput, Button } from '@mantine/core'
+import { Text, Flex } from '@mantine/core'
 import TimingCounter from '@/components/tokens/timing-counter'
 import PomodoroStack from '@/components/tokens/pomodoro-stack'
 import PomodoroTimingActions from '@/components/tokens/pomodoro-timing-actions'
 import Header from '@/components/tokens/header'
+import TaskInput from '@/components/tokens/task-input'
 
 export default function Home() {
     return (
@@ -37,7 +38,7 @@ export default function Home() {
                     {/* wrapper container to position center */}
                     <div className='flex flex-col items-center gap-7'>
                         {/* Task Label Field */}
-                        <TextInput placeholder='Task' variant='filled' w='150px' />
+                        <TaskInput />
                         {/* Timing */}
                         <TimingCounter />
                         {/* Pomodoro Stacking */}

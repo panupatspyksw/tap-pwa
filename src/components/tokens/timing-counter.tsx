@@ -1,7 +1,19 @@
+'use client'
+
 import React from 'react'
 import { Title } from '@mantine/core'
+import { useSession } from '@/modules/session/store'
+import { shallow } from 'zustand/shallow'
+
+const fmt = (sec: number) => {
+    const m = String(Math.floor(sec / 60)).padStart(2, '0')
+    const s = String(sec % 60).padStart(2, '0')
+    return `${m}:${s}`
+}
 
 const TimingCounter = () => {
+    const remainingSec = useSession((s) => s.cycle.remainingSec)
+
     return (
         <Title
             c='white'
@@ -14,7 +26,7 @@ const TimingCounter = () => {
             }}
             className='text-9xl! text-shadow-2xl!'
         >
-            10:45
+            {fmt(remainingSec)}
         </Title>
     )
 }

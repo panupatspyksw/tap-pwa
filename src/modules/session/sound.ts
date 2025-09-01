@@ -10,7 +10,7 @@ export function primeSounds() {
     if (typeof window === 'undefined' || primed) return
     try {
         // try a muted play/pause to "unlock" audio
-        const a = new Audio('/sounds/focus.mp3')
+        const a = new Audio('/sounds/focus.wav')
         a.volume = 0
         a.play()
             ?.then(() => {

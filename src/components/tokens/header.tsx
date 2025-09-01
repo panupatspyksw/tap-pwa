@@ -2,8 +2,8 @@
 
 import React from 'react'
 import IconButton from './icon-button'
-import { IconMenu2, IconChartBarPopular, Icon } from '@tabler/icons-react'
-import { Menu, MenuItemProps } from '@mantine/core'
+import { IconMenu2, IconChartBarPopular } from '@tabler/icons-react'
+import { Menu } from '@mantine/core'
 import { IconSettings, IconPhoto, IconMessageCircle } from '@tabler/icons-react'
 import MenuItem from './menu-item'
 import MenuDivider from './menu-divider'

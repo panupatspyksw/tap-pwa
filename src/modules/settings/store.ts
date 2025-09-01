@@ -1,9 +1,10 @@
 import { create } from 'zustand'
-import { withSafePersist } from '@/modules/shared/with-safe-persist'
+// import { withSafePersist } from '@/modules/shared/with-safe-persist'
 import type { Settings } from './types'
+import { persist, createJSONStorage } from 'zustand/middleware'
 
 const DEFAULTS: Settings = {
-    session: { focusMin: 25, breakMin: 5 },
+    session: { focusMin: 1, breakMin: 5 },
     cycle: { sessionLength: 4, breakMin: 15 },
     task: '',
     notification: { enabled: true, volume: 0.8 }, // 0..1
@@ -20,34 +21,25 @@ interface SettingsStore {
 }
 
 export const useSettings = create<SettingsStore>()(
-    withSafePersist(
+    persist(
         (set, get) => ({
             settings: DEFAULTS,
 
             setSettings: (patch) => set({ settings: { ...get().settings, ...patch } }),
-
-            setSession: (patch) => {
-                const s = get().settings
-                set({ settings: { ...s, session: { ...s.session, ...patch } } })
-            },
-
-            setCycle: (patch) => {
-                const s = get().settings
-                set({ settings: { ...s, cycle: { ...s.cycle, ...patch } } })
-            },
-
-            setTask: (task) => {
-                const s = get().settings
-                set({ settings: { ...s, task } })
-            },
-
-            setNotification: (patch) => {
-                const s = get().settings
-                set({ settings: { ...s, notification: { ...s.notification, ...patch } } })
-            },
-
+            setSession: (patch) =>
+                set((s) => ({ settings: { ...s.settings, session: { ...s.settings.session, ...patch } } })),
+            setCycle: (patch) =>
+                set((s) => ({ settings: { ...s.settings, cycle: { ...s.settings.cycle, ...patch } } })),
+            setNotification: (patch) =>
+                set((s) => ({ settings: { ...s.settings, notification: { ...s.settings.notification, ...patch } } })),
+            setTask: (task) => set((s) => ({ settings: { ...s.settings, task } })),
             reset: () => set({ settings: DEFAULTS }),
         }),
-        { name: 'tap.settings' } // bump key if you changed structure
+        {
+            // ⬇️ bump this when you change defaults/shape so old localStorage doesn’t conflict
+            name: 'tap.settings.v3',
+            storage: createJSONStorage(() => localStorage),
+            partialize: (state) => ({ settings: state.settings }),
+        }
     )
 )

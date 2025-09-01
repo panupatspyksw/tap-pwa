@@ -6,6 +6,7 @@ import PomodoroStack from '@/components/tokens/pomodoro-stack'
 import PomodoroTimingActions from '@/components/tokens/pomodoro-timing-actions'
 import Header from '@/components/tokens/header'
 import TaskInput from '@/components/tokens/task-input'
+import TimingContainer from '../components/tokens/timing-container'
 
 export default function Home() {
     return (
@@ -34,7 +35,7 @@ export default function Home() {
                     </Flex>
                 </div>
                 {/* right side container */}
-                <div className=' h-full w-full p-6 flex flex-col justify-center items-center bg-white/20 backdrop-blur-xs rounded-2xl'>
+                <TimingContainer>
                     {/* wrapper container to position center */}
                     <div className='flex flex-col items-center gap-7'>
                         {/* Task Label Field */}
@@ -46,7 +47,7 @@ export default function Home() {
                         {/* Action sections */}
                         <PomodoroTimingActions />
                     </div>
-                </div>
+                </TimingContainer>
             </div>
         </ScreenContainer>
     )

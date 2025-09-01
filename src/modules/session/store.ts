@@ -1,25 +1,23 @@
 // src/modules/session/store.ts
-import { create } from 'zustand'
+import { create, type StoreApi } from 'zustand'
 import type { SessionState, SessionType, CycleSession } from './types'
 import { useSettings } from '@/modules/settings/store'
-import { playBreakSound, playFocusSound } from '@/modules/session/sound' // optional tiny helpers
+import { playBreakSound, playFocusSound } from '@/modules/session/sound'
+import { sessionLogRepository } from '../repositories/session-log-repository'
 
 type Store = {
     state: SessionState
     cycle: CycleSession
-
-    // controls
     start: () => void
     pause: () => void
     resume: () => void
     skip: () => void
+    back: () => void
     reset: () => void
-
-    /** Re-apply settings when not running (e.g., after saving settings) */
     applySettingsNow: () => void
 }
 
-// ---- durations from settings (single source of truth) ----
+// ---- durations from settings ----
 const sec = {
     focus: () => useSettings.getState().settings.session.focusMin * 60,
     sessionBrk: () => useSettings.getState().settings.session.breakMin * 60,
@@ -27,17 +25,29 @@ const sec = {
 }
 const sessionLength = () => useSettings.getState().settings.cycle.sessionLength
 
-const plannedFor = (phase: SessionType): number =>
-    phase === 'focus' ? sec.focus() : phase === 'session-break' ? sec.sessionBrk() : sec.cycleBrk()
+const plannedFor = (phase: SessionType): number => {
+    switch (phase) {
+        case 'focus':
+            return sec.focus()
+        case 'session-break':
+            return sec.sessionBrk()
+        case 'cycle-break':
+            return sec.cycleBrk()
+    }
+}
 
 // ---- ticking timer (one interval only) ----
 let timer: ReturnType<typeof setInterval> | null = null
-const startTick = (set: any, get: any) => {
+
+type SetState = StoreApi<Store>['setState']
+type GetState = StoreApi<Store>['getState']
+
+const startTick = (set: SetState, get: GetState) => {
     stopTick()
     timer = setInterval(() => {
         if (get().state !== 'running') return
         const next = Math.max(0, get().cycle.remainingSec - 1)
-        set((s: Store) => ({ cycle: { ...s.cycle, remainingSec: next } }))
+        set((s) => ({ cycle: { ...s.cycle, remainingSec: next } }))
         if (next === 0) completePhase(set, get, /*fromSkip*/ false)
     }, 1000)
 }
@@ -47,15 +57,15 @@ const stopTick = () => {
 }
 
 // ---- phase completion / transition ----
-function completePhase(set: any, get: any, fromSkip: boolean) {
-    const { state, cycle } = get() as Store
+function completePhase(set: SetState, get: GetState, fromSkip: boolean): void {
+    const { state, cycle } = get()
     const now = Date.now()
 
-    // (Optional) if you log history, build and append a SessionLog here
-    // const rec: SessionLog = { id: nanoid(), type: cycle.currentPhase, startAt: cycle.phaseStartedAt, endAt: now, duration: Math.max(0, Math.round((now - cycle.phaseStartedAt)/1000)) }
-    // sessionLogRepo.append(rec)
+    if (!fromSkip) {
+        const rec = sessionLogRepository.create(cycle.currentPhase, cycle.phaseStartedAt, now)
+        sessionLogRepository.append(rec)
+    }
 
-    // decide next phase
     const len = sessionLength()
     let nextPhase: SessionType
     let nextIndex = cycle.currentIndex
@@ -66,26 +76,24 @@ function completePhase(set: any, get: any, fromSkip: boolean) {
         nextPhase = 'focus'
         nextIndex = Math.min(len, cycle.currentIndex + 1)
     } else {
-        // cycle-break
         nextPhase = 'focus'
         nextIndex = 1
     }
 
-    // sounds (optional)
     if (nextPhase === 'focus') playFocusSound?.()
     else playBreakSound?.()
 
     const planned = plannedFor(nextPhase)
-    const newCycle: CycleSession = {
-        currentIndex: nextIndex,
-        currentPhase: nextPhase,
-        phaseStartedAt: now,
-        phasePlannedSec: planned,
-        remainingSec: planned,
-    }
-
-    // keep engine state as-is (paused stays paused, running keeps running)
-    set({ cycle: newCycle, state })
+    set({
+        state, // keep running/paused
+        cycle: {
+            currentIndex: nextIndex,
+            currentPhase: nextPhase,
+            phaseStartedAt: now,
+            phasePlannedSec: planned,
+            remainingSec: planned,
+        },
+    })
 }
 
 // ---- public store ----
@@ -135,8 +143,62 @@ export const useSession = create<Store>((set, get) => {
         },
 
         skip: () => {
-            // advance immediately; keep current engine state (paused stays paused)
             completePhase(set, get, /*fromSkip*/ true)
+        },
+
+        back: () => {
+            const keepEngine = get().state
+            const s = get().cycle
+            const len = sessionLength()
+            const elapsed = s.phasePlannedSec - s.remainingSec
+            const now = Date.now()
+
+            const setPhase = (phase: SessionType, index: number) => {
+                const planned = plannedFor(phase)
+                set({
+                    state: keepEngine,
+                    cycle: {
+                        currentIndex: index,
+                        currentPhase: phase,
+                        phaseStartedAt: now,
+                        phasePlannedSec: planned,
+                        remainingSec: planned,
+                    },
+                })
+            }
+
+            // restart current session if > 3s in
+            if (elapsed > 3) {
+                setPhase(s.currentPhase, s.currentIndex)
+                return
+            }
+
+            // go idle if at very first focus early
+            if (s.currentPhase === 'focus' && s.currentIndex === 1) {
+                stopTick()
+                const planned = plannedFor('focus')
+                set({
+                    state: 'idle',
+                    cycle: {
+                        currentIndex: 1,
+                        currentPhase: 'focus',
+                        phaseStartedAt: now,
+                        phasePlannedSec: planned,
+                        remainingSec: planned,
+                    },
+                })
+                return
+            }
+
+            // otherwise go to previous session
+            if (s.currentPhase === 'focus') {
+                const prevIndex = s.currentIndex > 1 ? s.currentIndex - 1 : len
+                setPhase('session-break', prevIndex)
+            } else if (s.currentPhase === 'session-break') {
+                setPhase('focus', Math.max(1, s.currentIndex))
+            } else {
+                setPhase('focus', len)
+            }
         },
 
         reset: () => {
@@ -145,7 +207,6 @@ export const useSession = create<Store>((set, get) => {
         },
 
         applySettingsNow: () => {
-            // when not running, rebuild a fresh focus phase with new settings
             if (get().state === 'running') return
             set({ cycle: initCycle() })
         },

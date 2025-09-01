@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Container, ContainerProps, Flex } from '@mantine/core'
+import { Container, ContainerProps } from '@mantine/core'
 import { cn } from '@/lib/utils'
 import ScreenCard from '@/components/tokens/screen-card'
 

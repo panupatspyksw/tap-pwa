@@ -3,7 +3,7 @@
 import React from 'react'
 import { Title } from '@mantine/core'
 import { useSession } from '@/modules/session/store'
-import { shallow } from 'zustand/shallow'
+// import { shallow } from 'zustand/shallow'
 
 const fmt = (sec: number) => {
     const m = String(Math.floor(sec / 60)).padStart(2, '0')

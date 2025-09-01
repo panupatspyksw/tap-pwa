@@ -24,13 +24,13 @@ const Header = () => {
                 </ul>
                 <Menu.Dropdown bg='#0C0E12' bd='solid 1px #22262F'>
                     {/* <Menu.Label>Application</Menu.Label> */}
-                    <MenuItem icon={IconSettings} label='Settings' />
-                    <MenuItem icon={IconMessageCircle} label='Statistics' />
+                    <MenuItem href='/settings' icon={IconSettings} label='Settings' />
+                    <MenuItem href='/' icon={IconMessageCircle} label='Statistics' />
                     <MenuDivider />
-                    <MenuItem icon={IconPhoto} label='About us' />
-                    <MenuItem icon={IconPhoto} label='How to use' />
+                    <MenuItem href='/' icon={IconPhoto} label='About us' />
+                    <MenuItem href='/' icon={IconPhoto} label='How to use' />
                     <MenuDivider />
-                    <MenuItem icon={IconPhoto} label='Quit' />
+                    <MenuItem href='/' icon={IconPhoto} label='Quit' />
                 </Menu.Dropdown>
             </nav>
         </Menu>

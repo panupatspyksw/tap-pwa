@@ -6,8 +6,11 @@ import { TextInput } from '@mantine/core'
 import { IconX } from '@tabler/icons-react'
 import { useSettings } from '@/modules/settings/store'
 import IconButton from '@/components/tokens/icon-button'
+import { useSession } from '@/modules/session/store'
+import { Text } from '@mantine/core'
 
 export default function TaskInput() {
+    const phase = useSession((s) => s.cycle.currentPhase)
     const task = useSettings((s) => s.settings.task)
     const setTask = useSettings((s) => s.setTask)
 
@@ -17,6 +20,14 @@ export default function TaskInput() {
     useEffect(() => setValue(task), [task])
 
     const commit = () => setTask(value.trim())
+
+    if (phase !== 'focus') {
+        return (
+            <Text size='xl' className='font-semibold! text-white/70!'>
+                Break
+            </Text>
+        )
+    }
 
     return (
         <TextInput

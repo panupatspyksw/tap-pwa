@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 const ScreenCard = ({ className, style, ...props }: CardProps) => {
     return (
         <Card
-            className={cn('overflow-auto h-full w-full border border-gray-500/90 flex flex-col', className)}
+            className={cn('overflow-auto h-full w-full border border-gray-600/90 flex flex-col', className)}
             style={{
                 overflowY: 'auto', // 👈 makes inner content scroll
                 ...style,

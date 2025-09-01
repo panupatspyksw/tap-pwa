@@ -6,11 +6,11 @@ import PomodoroStack from '@/components/tokens/pomodoro-stack'
 import PomodoroTimingActions from '@/components/tokens/pomodoro-timing-actions'
 import Header from '@/components/tokens/header'
 import TaskInput from '@/components/tokens/task-input'
-import TimingContainer from '../components/tokens/timing-container'
+import TimingContainer from '@/components/tokens/timing-container'
 
 export default function Home() {
     return (
-        <ScreenContainer bg='dark.9'>
+        <ScreenContainer>
             <Image
                 src='/medias/cloud-background edited v1.0.png'
                 width={1500}

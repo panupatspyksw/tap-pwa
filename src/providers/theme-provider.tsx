@@ -7,7 +7,6 @@ const theme = createTheme({
         Input: {
             styles: {
                 input: {
-                    // padding: '8px 12px',
                     borderRadius: '8px',
                     border: '1px solid #373A41',
                     background: '#0C0E12',
@@ -16,6 +15,13 @@ const theme = createTheme({
                 },
             },
         },
+        InputWrapper: {
+            styles: {
+                label: { color: '#E6E8EB' },
+                description: { color: '#A1A6AE' },
+            },
+        },
+
         // (optional) ensure Select follows the same look
         Select: {
             styles: {
@@ -33,5 +39,10 @@ const theme = createTheme({
 })
 
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
-    return <MantineProvider theme={theme}>{children}</MantineProvider>
+    return (
+        <MantineProvider theme={theme} forceColorScheme='dark'>
+            {' '}
+            {children}
+        </MantineProvider>
+    )
 }

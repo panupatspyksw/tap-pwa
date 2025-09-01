@@ -61,11 +61,13 @@ function completePhase(set: SetState, get: GetState, fromSkip: boolean): void {
     const { state, cycle } = get()
     const now = Date.now()
 
+    // (1) Log if natural end
     if (!fromSkip) {
         const rec = sessionLogRepository.create(cycle.currentPhase, cycle.phaseStartedAt, now)
         sessionLogRepository.append(rec)
     }
 
+    // (2) Decide next phase/index
     const len = sessionLength()
     let nextPhase: SessionType
     let nextIndex = cycle.currentIndex
@@ -80,12 +82,25 @@ function completePhase(set: SetState, get: GetState, fromSkip: boolean): void {
         nextIndex = 1
     }
 
+    // (3) Auto-start flags (only on natural completion)
+    let nextState: SessionState = state
+    if (!fromSkip) {
+        const { autoStartFocus, autoStartBreak } = useSettings.getState().settings.session
+        if (nextPhase === 'focus') {
+            nextState = autoStartFocus ? 'running' : 'paused'
+        } else {
+            nextState = autoStartBreak ? 'running' : 'paused'
+        }
+    }
+
+    // sounds (optional)
     if (nextPhase === 'focus') playFocusSound?.()
     else playBreakSound?.()
 
+    // (4) Apply transition
     const planned = plannedFor(nextPhase)
     set({
-        state, // keep running/paused
+        state: nextState,
         cycle: {
             currentIndex: nextIndex,
             currentPhase: nextPhase,
@@ -94,6 +109,9 @@ function completePhase(set: SetState, get: GetState, fromSkip: boolean): void {
             remainingSec: planned,
         },
     })
+
+    // If we paused due to auto-start = false, stop ticking
+    if (nextState !== 'running') stopTick()
 }
 
 // ---- public store ----

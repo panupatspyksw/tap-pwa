@@ -2,6 +2,8 @@
 export type SessionConfig = {
     focusMin: number
     breakMin: number
+    autoStartFocus: boolean
+    autoStartBreak: boolean
 }
 
 export type CycleConfig = {

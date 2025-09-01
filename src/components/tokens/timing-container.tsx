@@ -12,7 +12,7 @@ export default function TimingContainer({ className, ...rest }: TimingContainerP
     return (
         <div
             className={cn(
-                'h-full w-full p-6 flex flex-col justify-center items-center bg-white/20 backdrop-blur-xs rounded-2xl transition-all ',
+                'h-full w-full p-6 flex flex-col justify-center items-center bg-white/20 backdrop-blur-xs rounded-2xl transition-all border border-white/40',
                 { 'bg-teal-800/70': phase !== 'focus' },
                 className
             )}

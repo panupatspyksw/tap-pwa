@@ -4,7 +4,7 @@ import type { Settings } from './types'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
 const DEFAULTS: Settings = {
-    session: { focusMin: 1, breakMin: 5 },
+    session: { focusMin: 1, breakMin: 5, autoStartFocus: true, autoStartBreak: true },
     cycle: { sessionLength: 4, breakMin: 15 },
     task: '',
     notification: { enabled: true, volume: 0.8 }, // 0..1

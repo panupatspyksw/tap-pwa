@@ -4,7 +4,7 @@ import React from 'react'
 import IconButton from './icon-button'
 import { IconMenu2, IconChartBarPopular } from '@tabler/icons-react'
 import { Menu } from '@mantine/core'
-import { IconSettings, IconPhoto, IconMessageCircle } from '@tabler/icons-react'
+import { IconSettings, IconPhoto } from '@tabler/icons-react'
 import MenuItem from './menu-item'
 import MenuDivider from './menu-divider'
 import Link from 'next/link'
@@ -28,7 +28,7 @@ const Header = () => {
                 <Menu.Dropdown bg='#0C0E12' bd='solid 1px #22262F'>
                     {/* <Menu.Label>Application</Menu.Label> */}
                     <MenuItem href='/settings' icon={IconSettings} label='Settings' />
-                    <MenuItem href='/' icon={IconMessageCircle} label='Statistics' />
+                    <MenuItem href='/statistics' icon={IconChartBarPopular} label='Statistics' />
                     <MenuDivider />
                     <MenuItem href='/' icon={IconPhoto} label='About us' />
                     <MenuItem href='/' icon={IconPhoto} label='How to use' />

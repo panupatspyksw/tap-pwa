@@ -19,9 +19,9 @@ const DashboardMenu = () => {
                 </ul>
                 <Menu.Dropdown bg='#0C0E12' bd='solid 1px #22262F'>
                     {/* <Menu.Label>Application</Menu.Label> */}
-                    <MenuItem href='/#' icon={IconTableExport} label='Export Data' />
-                    <MenuItem href='/#' icon={IconList} label='Manage Session' />
-                    <MenuItem c='red' href='/' icon={IconTrash} label='Reset Statistics' />
+                    <MenuItem href='#' icon={IconTableExport} label='Export Data' />
+                    <MenuItem href='/manage' icon={IconList} label='Manage Session' />
+                    <MenuItem c='red' href='#' icon={IconTrash} label='Reset Statistics' />
                 </Menu.Dropdown>
             </nav>
         </Menu>

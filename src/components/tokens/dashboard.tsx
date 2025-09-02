@@ -56,7 +56,7 @@ export default function Dashboard() {
             </div>
 
             <div className='flex gap-4 py-5 items-center justify-between'>
-                <Text c='white' size='lg' className='font-semibold' suppressHydrationWarning>
+                <Text c='white' size='lg' className='font-semibold!'>
                     {summary.title
                         ? `${summary.title} — ${formatTotalMinutes(summary.totalMin, {
                               showDays: true,

@@ -16,11 +16,23 @@ export const sessionLogRepository = {
         if (typeof window === 'undefined') return []
         return safeParse(localStorage.getItem(KEY))
     },
+    /** Replace the entire log set with a new list */
+    replace(next: SessionLog[]) {
+        if (typeof window === 'undefined') return
+        localStorage.setItem(KEY, JSON.stringify(next))
+    },
     append(rec: SessionLog) {
         if (typeof window === 'undefined') return
         const all = sessionLogRepository.list()
         all.push(rec)
         localStorage.setItem(KEY, JSON.stringify(all))
+    },
+    /** Remove a single record by id (no-op if not found) */
+    remove(id: string) {
+        if (typeof window === 'undefined') return
+        const all = sessionLogRepository.list()
+        const next = all.filter((r) => r.id !== id)
+        localStorage.setItem(KEY, JSON.stringify(next))
     },
     clear() {
         if (typeof window === 'undefined') return

@@ -1,19 +1,30 @@
 @import 'tailwindcss';
 
+/* ---------- CSS Variables ---------- */
 :root {
+    /* Add your global vars here if needed */
 }
 
+/* ---------- Tailwind Theme Inline ---------- */
 @theme inline {
     --font-sans: var(--font-inter);
+    /* custom inner shadows -> usable via `shadow-{name}` */
+    --shadow-inner-lg: inset 0 8px 16px rgba(0, 0, 0, 0.25);
+    --shadow-inner-teal: inset 0 4px 8px rgba(45, 212, 191, 0.35);
 }
 
+/* ---------- Base Styles ---------- */
 body {
+    @apply font-sans;
     font-family: var(--font-inter), sans-serif;
+    background-color: #0c0e12; /* optional: matches your dark theme */
+    color: #fff; /* optional: default text color */
 }
 
+/* ---------- Utilities ---------- */
 /* Hide scrollbar but keep scrolling */
 .hide-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
+    -ms-overflow-style: none; /* IE + Edge */
     scrollbar-width: none; /* Firefox */
 }
 

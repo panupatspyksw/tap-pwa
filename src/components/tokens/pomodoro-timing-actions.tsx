@@ -1,7 +1,7 @@
 // src/components/tokens/pomodoro-timing-actions.tsx
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback, useRef } from 'react'
 import { Flex } from '@mantine/core'
 import {
     IconRotate,
@@ -29,28 +29,32 @@ export default function PomodoroTimingActions() {
         }))
     )
 
-    const onToggle = () => {
+    const onToggle = useCallback(() => {
         if (state === 'running') {
             pause()
-        } else {
-            primeSounds()
-            state === 'idle' ? start() : resume()
+            return
         }
-    }
+        primeSounds()
+        if (state === 'idle') start()
+        else resume()
+    }, [state, pause, start, resume])
 
-    // --- Spacebar hotkey: toggle play/pause unless user is typing ---
+    const toggleRef = useRef(onToggle)
+    useEffect(() => {
+        toggleRef.current = onToggle
+    }, [onToggle])
+
     useEffect(() => {
         const isEditable = (el: EventTarget | null) => {
             const node = el as HTMLElement | null
             if (!node) return false
             const tag = node.tagName
             if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return true
-            if ((node as HTMLElement).isContentEditable) return true
+            if (node.isContentEditable) return true
             return false
         }
 
         const onKeyDown = (e: KeyboardEvent) => {
-            // Only plain space (no modifiers), and not while typing
             if (
                 (e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar') &&
                 !e.altKey &&
@@ -59,14 +63,14 @@ export default function PomodoroTimingActions() {
                 !e.shiftKey &&
                 !isEditable(e.target)
             ) {
-                e.preventDefault() // prevent page scroll
-                onToggle()
+                e.preventDefault()
+                toggleRef.current() // use latest toggle without rebinding
             }
         }
 
         window.addEventListener('keydown', onKeyDown)
         return () => window.removeEventListener('keydown', onKeyDown)
-    }, [onToggle]) // re-bind if toggle behavior changes
+    }, []) // <-- bind once
 
     return (
         <Flex className='gap-2'>

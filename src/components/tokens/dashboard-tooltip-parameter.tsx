@@ -1,4 +1,4 @@
-import { Badge, BadgeProps, Text } from '@mantine/core'
+import { Badge, BadgeProps } from '@mantine/core'
 
 import React from 'react'
 

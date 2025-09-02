@@ -1,9 +1,9 @@
 'use client'
 
-import React from 'react'
 import { Title } from '@mantine/core'
 import { useSession } from '@/modules/session/store'
 // import { shallow } from 'zustand/shallow'
+import { useEffect, useState } from 'react'
 
 const fmt = (sec: number) => {
     const m = String(Math.floor(sec / 60)).padStart(2, '0')
@@ -13,6 +13,9 @@ const fmt = (sec: number) => {
 
 const TimingCounter = () => {
     const remainingSec = useSession((s) => s.cycle.remainingSec)
+    // render a stable placeholder on SSR/first paint, then swap in real time
+    const [mounted, setMounted] = useState(false)
+    useEffect(() => setMounted(true), [])
 
     return (
         <Title
@@ -26,7 +29,7 @@ const TimingCounter = () => {
             }}
             className='text-9xl! text-shadow-2xl!'
         >
-            {fmt(remainingSec)}
+            {mounted ? fmt(remainingSec) : '--:--'}
         </Title>
     )
 }

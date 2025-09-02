@@ -10,6 +10,8 @@ import ResetDefaultButton from '@/components/tokens/reset-default-button'
 import SaveButton from '../save-button'
 import type { SessionConfig, CycleConfig } from '@/modules/settings/types'
 import { useSettings } from '@/modules/settings/store'
+import ScreenGrayContentWrapper from '@/components/tokens/screen-gray-content-wrapper'
+import { useSession } from '@/modules/session/store'
 
 type FocusSessionFormValues = {
     focusMin: number
@@ -28,6 +30,8 @@ export default function FocusSessionSettingForm() {
     const setSession = useSettings((s) => s.setSession)
     const setCycle = useSettings((s) => s.setCycle)
     const resetStore = useSettings((s) => s.reset)
+    const sessionState = useSession((store) => store.state)
+    const resetSession = useSession((store) => store.reset)
 
     const [submitting, setSubmitting] = useState(false)
 
@@ -90,13 +94,16 @@ export default function FocusSessionSettingForm() {
     )
 
     return (
-        <div className='bg-[#181D27] mt-4 p-5'>
+        <ScreenGrayContentWrapper>
             <form
                 onSubmit={form.onSubmit(async ({ session, cycle }) => {
                     setSubmitting(true)
                     try {
                         setSession(session)
                         setCycle(cycle)
+                        if (sessionState === 'idle') {
+                            resetSession()
+                        }
                         // mark as clean for future Cancel
                         form.setInitialValues(form.values)
                     } finally {
@@ -143,6 +150,6 @@ export default function FocusSessionSettingForm() {
                     <SaveButton type='submit' loading={submitting} />
                 </Group>
             </form>
-        </div>
+        </ScreenGrayContentWrapper>
     )
 }

@@ -1,0 +1,8 @@
+.tab[data-active] {
+    background-color: #f8fafc; /* active background */
+    color: #364152; /* active text color */
+}
+
+.tab {
+    font-weight: 500;
+}

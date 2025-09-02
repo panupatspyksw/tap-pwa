@@ -1,4 +1,5 @@
 import { MantineProvider, createTheme } from '@mantine/core'
+import classes from '@/styles/Tabs.module.css'
 
 const theme = createTheme({
     fontFamily: 'var(--font-inter), system-ui, sans-serif',
@@ -33,6 +34,11 @@ const theme = createTheme({
                     boxShadow: '0 1px 2px 0 rgba(255, 255, 255, 0)',
                     color: '#E6E8EB',
                 },
+            },
+        },
+        Tabs: {
+            classNames: {
+                tab: classes.tab,
             },
         },
     },

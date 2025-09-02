@@ -7,6 +7,7 @@ import { Menu } from '@mantine/core'
 import { IconSettings, IconPhoto, IconMessageCircle } from '@tabler/icons-react'
 import MenuItem from './menu-item'
 import MenuDivider from './menu-divider'
+import Link from 'next/link'
 
 const Header = () => {
     return (
@@ -14,7 +15,9 @@ const Header = () => {
             <nav className='p-8 flex justify-end absolute top-0 right-0 z-10'>
                 <ul className='flex gap-3'>
                     <li>
-                        <IconButton label='chart' icon={IconChartBarPopular} color='gray.9' />
+                        <Link href='/statistics'>
+                            <IconButton label='chart' icon={IconChartBarPopular} color='gray.9' />
+                        </Link>
                     </li>
                     <li>
                         <Menu.Target>

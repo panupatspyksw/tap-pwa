@@ -10,6 +10,7 @@ import ResetDefaultButton from '@/components/tokens/reset-default-button'
 import SaveButton from '../save-button'
 import { useSettings } from '@/modules/settings/store'
 import type { NotiConfig } from '@/modules/settings/types'
+import ScreenGrayContentWrapper from '@/components/tokens/screen-gray-content-wrapper'
 
 // src/components/tokens/form/notification-setting-form.tsx
 
@@ -59,7 +60,7 @@ const NotificationSettingForm = () => {
     const volumeMarks = useMemo(() => [0, 20, 40, 60, 80, 100].map((v) => ({ value: v, label: String(v) })), [])
 
     return (
-        <div className='bg-[#181D27] mt-4 p-5'>
+        <ScreenGrayContentWrapper>
             <form
                 onSubmit={form.onSubmit(async (payload) => {
                     setSubmitting(true)
@@ -95,7 +96,7 @@ const NotificationSettingForm = () => {
                     </Group>
                 </div>
             </form>
-        </div>
+        </ScreenGrayContentWrapper>
     )
 }
 

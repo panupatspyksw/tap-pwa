@@ -9,6 +9,7 @@ type MenuItemPropsC = {
     icon: Icon
     label: string
     href: string
+    onClick?: () => void
 } & MenuItemProps
 
 const MenuItem = ({ label, ...props }: MenuItemPropsC) => (

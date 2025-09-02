@@ -97,7 +97,6 @@ export default function Dashboard() {
                         ]}
                         tooltipProps={{
                             content: ({ label, payload }) => {
-                                console.log(payload)
                                 return (
                                     <Card withBorder bg='dark' shadow='lg' w={300}>
                                         <Text className='font-semibold!' size='lg'>

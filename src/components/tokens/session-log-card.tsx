@@ -43,14 +43,15 @@ const SessionLogCard = ({
                 </div>
             </div>
             {/* timestamp start - end */}
-            <div className='h-fit flex rounded-lg px-4 py-1.5 bg-black/20'>
+            <div className='h-fit w-fit flex items-center gap-3 rounded-lg px-4 py-1.5 bg-black/20'>
                 <div className='flex flex-col gap-1.5'>
                     <p>{format(startTimestamp, 'd MMM yyyy')}</p>
-                    {!_isSameDay && <span className='w-2 h-2 bg-white rounded-full'></span>}
                     <p>
                         {format(startTimestamp, 'hh:mm:ss')} {_isSameDay && ' - ' + format(endTimestamp, 'hh:mm:ss')}
                     </p>
                 </div>
+                {!_isSameDay && <span className='w-1 h-1 bg-white/50 rounded-full'></span>}
+
                 {!_isSameDay && (
                     <div className='flex flex-col gap-1.5'>
                         <p>{format(endTimestamp, 'd MMM yyyy')}</p>

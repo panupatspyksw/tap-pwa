@@ -1,6 +1,12 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
+    // output: 'export',
+    experimental: {
+        staticGenerationRetryCount: 1,
+        staticGenerationMaxConcurrency: 8,
+        staticGenerationMinPagesPerWorker: 25,
+    },
     async headers() {
         return [
             {

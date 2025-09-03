@@ -7,6 +7,7 @@ import '@mantine/charts/styles.css'
 import './globals.css'
 import { ColorSchemeScript, mantineHtmlProps } from '@mantine/core'
 import ThemeProvider from '@/providers/theme-provider'
+import SWRegister from '@/providers/sw-register'
 
 const inter = Inter({
     variable: '--font-inter',
@@ -31,6 +32,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <ColorSchemeScript />
             </head>
             <body className='antialiased bg-transparent'>
+                <SWRegister />
+
                 <ThemeProvider>{children}</ThemeProvider>
             </body>
         </html>

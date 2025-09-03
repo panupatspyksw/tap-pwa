@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
     return {
-        name: 'TAP – Tomodoro Application for a Person',
+        name: 'TAP',
         short_name: 'TAP',
         description:
             'TAP is a simple productivity app designed to help you track focus time, manage daily routines, and build better habits through clear and useful insights',
@@ -14,7 +14,7 @@ export default function manifest(): MetadataRoute.Manifest {
         icons: [
             {
                 src: '/196.png',
-                sizes: '196x196',
+                sizes: '160x160',
                 type: 'image/png',
             },
             {

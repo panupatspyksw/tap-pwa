@@ -14,9 +14,14 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-    title: 'TAP – Timing App for Productivity',
+    title: 'TAP – Tomodoro Application for a Person',
     description:
         'TAP is a simple productivity app designed to help you track focus time, manage daily routines, and build better habits through clear and useful insights.',
+    icons: {
+        icon: '/favicon.ico',
+        apple: '/apple-touch-icon.png',
+    },
+    manifest: '/manifest.json',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
